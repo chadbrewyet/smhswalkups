@@ -1,6 +1,6 @@
 // TOP OF FILE: Ensure these are exactly as shown
 const CLIENT_ID = 'e299f9731add487cb32f1c4e3989c847'; 
-const REDIRECT_URI = 'https://chadbrewyet.github.io/smhsbaseball.github.io/'; 
+const REDIRECT_URI = 'https://chadbrewyet.github.io/smhswalkups/'; 
 const SCOPES = ['streaming', 'user-read-playback-state', 'user-modify-playback-state'];
 
 // UPDATED LOGIN FUNCTION
@@ -47,3 +47,4 @@ function handleAuth() {
         alert("Spotify returned an error: " + error);
     }
 }
+
