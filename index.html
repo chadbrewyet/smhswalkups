@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pro Baseball Soundboard v2 (Spotify)</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Sortable/1.15.0/Sortable.min.js"></script>
+    <script src="https://sdk.scdn.co/spotify-player.js"></script>
+</head>
+<body onload="initDatabase()" class="locked">
+
+    <header>
+        <div class="header-left">
+            <button id="subs-toggle" onclick="toggleSubs()">📋 Quick Subs</button>
+            <h1>⚾ Lineup <span id="auth-status" style="font-size: 0.8rem; color: #e74c3c;">(Offline)</span></h1>
+        </div>
+
+        <div class="header-controls">
+            <button id="spotify-login-btn" onclick="loginToSpotify()" style="background:#1DB954; color:white; border:none; padding:8px 15px; border-radius:20px; font-weight:bold; cursor:pointer;">Connect Spotify</button>
+            <div class="control-group">
+                <label>Vol:</label>
+                <input type="range" id="volume" min="0" max="100" step="1" value="80" oninput="updateSpotifyVolume(this.value)">
+            </div>
+            <div class="control-group">
+                <label>Fade:</label>
+                <select id="fade-speed">
+                    <option value="500">Fast (0.5s)</option>
+                    <option value="1500" selected>Smooth (1.5s)</option>
+                    <option value="3000">Slow (3s)</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="header-btns">
+            <button class="reset-highlight-header-btn" onclick="resetActiveBatter()">🔄 Reset Highlight</button>
+            <button id="lock-toggle" onclick="toggleEditMode()">🔓 Unlock to Edit</button>
+        </div>
+    </header>
+
+    <aside id="subs-drawer" class="closed">
+        <div class="drawer-header">
+            <h3>All Players (# Order)</h3>
+            <button onclick="toggleSubs()">✕</button>
+        </div>
+        <div id="subs-list"></div>
+    </aside>
+
+    <main>
+        <section class="game-view">
+            <div class="section-header">
+                <h2>Current Batting Order</h2>
+                <button class="clear-lineup-btn" onclick="clearLineup()">Clear All</button>
+            </div>
+            <div id="lineup" class="sortable-list"></div>
+        </section>
+
+        <section class="roster-view">
+            <h2>Full Roster Management</h2>
+            <div class="add-player-form">
+                <input type="text" id="new-player-name" placeholder="Name">
+                <input type="text" id="new-player-number" placeholder="#">
+                <button onclick="addNewPlayer()">Add New</button>
+            </div>
+            <div id="roster" class="roster-grid"></div>
+        </section>
+    </main>
+
+    <script src="script.js"></script>
+</body>
+</html>

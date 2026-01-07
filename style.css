@@ -1,0 +1,110 @@
+/* GLOBAL STYLES */
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #121212;
+    color: white;
+    margin: 0;
+    padding: 20px;
+}
+
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    max-width: 1200px;
+    margin: 0 auto 20px auto;
+    background: #1a1a1a;
+    padding: 15px;
+    border-radius: 10px;
+    border: 1px solid #333;
+}
+
+.header-left { display: flex; align-items: center; gap: 20px; }
+.header-btns { display: flex; gap: 10px; }
+
+.header-controls {
+    display: flex;
+    gap: 20px;
+    align-items: center;
+    background: #252525;
+    padding: 8px 15px;
+    border-radius: 8px;
+    border: 1px solid #444;
+}
+
+.control-group {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.9rem;
+    font-weight: bold;
+    color: #bbb;
+}
+
+.control-group input[type="range"] { width: 80px; cursor: pointer; }
+.control-group select { background: #111; color: white; border: 1px solid #444; padding: 4px; border-radius: 4px; }
+
+#lock-toggle { background: #f1c40f; color: #121212; border: none; padding: 10px 20px; border-radius: 5px; font-weight: bold; cursor: pointer; }
+.reset-highlight-header-btn { background: #7f8c8d; color: white; border: none; padding: 10px 20px; border-radius: 5px; font-weight: bold; cursor: pointer; }
+#subs-toggle { background: #2980b9; color: white; border: none; padding: 10px 15px; border-radius: 5px; cursor: pointer; font-weight: bold; }
+
+/* QUICK SUBS */
+#subs-drawer {
+    position: fixed; left: 0; top: 0; bottom: 0; width: 320px;
+    background: #181818; border-right: 2px solid #333;
+    z-index: 2000; transition: transform 0.3s ease;
+    padding: 20px; overflow-y: auto;
+}
+#subs-drawer.closed { transform: translateX(-100%); }
+
+.sub-item-btn {
+    width: 100%; background: #252525; border: 1px solid #333;
+    color: white; padding: 15px 20px; text-align: left; 
+    cursor: pointer; display: block; margin-bottom: 8px; 
+    font-size: 1.1rem; box-sizing: border-box; border-radius: 8px; 
+    transition: background 0.2s; border-left: 6px solid #444; 
+}
+.sub-item-btn:nth-child(even) { background: #1e1e1e; }
+
+/* MAIN LAYOUT */
+main { display: grid; grid-template-columns: 1fr 400px; gap: 30px; max-width: 1200px; margin: 0 auto; }
+
+/* LINEUP ITEM STATES */
+#lineup { counter-reset: batting-order; min-height: 100px; }
+.lineup-item {
+    background: #2c3e50; margin-bottom: 10px; padding: 15px;
+    border-radius: 8px; display: flex; align-items: center;
+    cursor: grab; border-left: 8px solid #34495e; justify-content: space-between;
+    counter-increment: batting-order; transition: background 0.2s ease;
+}
+.lineup-item::before {
+    content: counter(batting-order); background: rgba(255, 255, 255, 0.1);
+    color: white; font-weight: bold; width: 30px; height: 30px;
+    display: flex; align-items: center; justify-content: center;
+    border-radius: 50%; margin-right: 15px;
+}
+
+/* SPOTIFY COLORS */
+.lineup-item.playing, .sub-item-btn.playing { background: #1DB954 !important; color: white !important; border-left-color: #1ed760 !important; }
+.lineup-item.stopping, .sub-item-btn.stopping { background: #c0392b !important; color: white !important; border-left-color: #e74c3c !important; }
+.lineup-item.on-deck { background: #f1c40f !important; border-left-color: #d4ac0d; color: #121212; }
+.lineup-item.on-deck .play-trigger { color: #121212; }
+
+/* INTERLOCK */
+body.audio-active .play-trigger:not(.playing-active),
+body.audio-active .sub-item-btn:not(.playing-active) {
+    pointer-events: none; opacity: 0.3;
+}
+
+.play-trigger { flex-grow: 1; background: none; border: none; color: white; text-align: left; font-size: 1.3rem; cursor: pointer; }
+.remove-from-lineup { background: #e74c3c; border: none; color: white; padding: 8px 12px; border-radius: 5px; cursor: pointer; }
+
+/* ROSTER SEARCH */
+.spotify-search-input { width: 100%; background: #111; border: 1px solid #444; color: white; padding: 8px; border-radius: 4px; margin-top: 10px; }
+.search-results { background: #1a1a1a; border-radius: 4px; margin-top: 5px; max-height: 120px; overflow-y: auto; border: 1px solid #333; }
+.search-item { padding: 8px; font-size: 0.8rem; cursor: pointer; border-bottom: 1px solid #222; }
+.search-item:hover { background: #1DB954; color: black; }
+
+/* LOCK LOGIC */
+body.locked .roster-view, body.locked .remove-from-lineup, body.locked .clear-lineup-btn { display: none; }
+body.locked main { grid-template-columns: 1fr; }
