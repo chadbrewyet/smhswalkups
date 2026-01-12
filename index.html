@@ -6,6 +6,15 @@
     <title>Pro Baseball Soundboard v2 (Spotify)</title>
     <link rel="stylesheet" href="style.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Sortable/1.15.0/Sortable.min.js"></script>
+    <script>
+      // Ensure a global exists so the SDK won't throw if it loads before our app initializes.
+      // If the SDK fires early, we set a flag so our app can act on it when it boots.
+      window.__spotifySDKFiredEarly = false;
+      window.onSpotifyWebPlaybackSDKReady = window.onSpotifyWebPlaybackSDKReady || function() {
+        window.__spotifySDKFiredEarly = true;
+        console.warn('Spotify SDK fired before app init; queued.');
+      };
+    </script>
     <script src="https://sdk.scdn.co/spotify-player.js"></script>
 </head>
 <body onload="initDatabase()" class="locked">
