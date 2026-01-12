@@ -302,3 +302,4 @@ if(lineupEl) {
         animation: 150, onEnd: () => { saveLineupState(); updateHighlighting(); }
     });
 }
+
