@@ -62,21 +62,44 @@ function handleAuth() {
     }
 }
 
+// Robust Spotify player initialization (replaces previous initSpotifyPlayer)
+function createSpotifyPlayer() {
+    if (player) return; // don't recreate
+
+    if (!window.Spotify) {
+        console.error('Spotify SDK not available yet.');
+        return;
+    }
+
+    player = new Spotify.Player({
+        name: 'SMHS Baseball Soundboard',
+        getOAuthToken: cb => { cb(access_token); },
+        volume: globalVolume / 100
+    });
+
+    player.addListener('ready', ({ device_id: id }) => {
+        device_id = id;
+        console.log("Spotify Ready - Device ID:", id);
+    });
+
+    player.addListener('initialization_error', ({ message }) => console.error('Spotify init error', message));
+    player.addListener('authentication_error', ({ message }) => console.error('Spotify auth error', message));
+    player.addListener('account_error', ({ message }) => console.error('Spotify account error', message));
+    player.addListener('playback_error', ({ message }) => console.error('Spotify playback error', message));
+
+    player.connect();
+}
+
 function initSpotifyPlayer() {
-    window.onSpotifyWebPlaybackSDKReady = () => {
-        player = new Spotify.Player({
-            name: 'SMHS Baseball Soundboard',
-            getOAuthToken: cb => { cb(access_token); },
-            volume: globalVolume / 100
-        });
-
-        player.addListener('ready', ({ device_id: id }) => { 
-            device_id = id;
-            console.log("Spotify Ready - Device ID:", id);
-        });
-
-        player.connect();
+    // Ensure the global exists so the SDK can call it if it fires later
+    window.onSpotifyWebPlaybackSDKReady = function() {
+        createSpotifyPlayer();
     };
+
+    // If the SDK already fired earlier (or Spotify already loaded), create the player now
+    if (window.__spotifySDKFiredEarly || window.Spotify) {
+        createSpotifyPlayer();
+    }
 }
 
 // PLAYBACK
@@ -302,4 +325,3 @@ if(lineupEl) {
         animation: 150, onEnd: () => { saveLineupState(); updateHighlighting(); }
     });
 }
-
