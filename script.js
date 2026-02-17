@@ -1,4 +1,4 @@
-const CLIENT_ID = 'e299f9731add487cb32f1c4e3989c847'; 
+const CLIENT_ID = '6fcf4eda70c44b08878b97d61c185764'; 
 const REDIRECT_URI = 'https://chadbrewyet.github.io/smhswalkups/'; 
 const SCOPES = 'streaming user-read-playback-state user-modify-playback-state';
 
@@ -325,3 +325,4 @@ if(lineupEl) {
         animation: 150, onEnd: () => { saveLineupState(); updateHighlighting(); }
     });
 }
+
