@@ -26,13 +26,12 @@ function initDatabase() {
 
 // THE FIX: Manual URL Construction
 function loginToSpotify() {
-    // We construct the URL manually to ensure 'response_type=token' is exactly what Spotify expects
     let url = 'https://accounts.spotify.com/authorize';
     url += '?client_id=' + encodeURIComponent(CLIENT_ID);
-    url += '&response_type=token';
+    url += '&response_type=code';  // Change from 'token' to 'code'
     url += '&redirect_uri=' + encodeURIComponent(REDIRECT_URI);
     url += '&scope=' + encodeURIComponent(SCOPES);
-    url += '&show_dialog=true';
+    url += '&state=' + Math.random().toString(36).substring(7);  // Add state for security
 
     window.location.href = url;
 }
@@ -325,5 +324,6 @@ if(lineupEl) {
         animation: 150, onEnd: () => { saveLineupState(); updateHighlighting(); }
     });
 }
+
 
 
